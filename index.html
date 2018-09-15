@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <title>WebScripts.biz</title>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="shortcut icon" type="image/x-icon" href="../../img/faviconPuzzle.jpg">
+      <style>
+
+body{ 
+   margin: 0; padding: 0;
+}
+#pageWrapper {
+   max-width: 600px;
+   margin: auto;
+   font-family: serif;
+   padding-bottom: 10px;
+   color: #2B1A00;
+   padding: 4px;
+}
+h1,h2,h3,#copy {
+   font-family: sans-serif;
+}
+#firstH1,#copy {
+   color: gray;
+   background: black;
+   margin: 0;
+   padding: 1em;
+}
+#secondH1 { 
+   text-align: center; 
+   color: #683E00;
+}
+h2, h3 { 
+   color: #683E00;
+   margin: 50px auto 30px auto; 
+}
+.dlD { text-align: center; margin: 50px auto; }
+.btn {
+   display: block;
+   width: 270px; 
+   height: 40px;
+   padding-top: 20px;
+   margin: 10px auto;
+   text-decoration: none;
+   border: 1px solid blue;
+   border-radius: 5px;
+   font-size: 1.2em;
+   color: blue;
+   font-family: sans-serif;
+}
+.btn:hover { background: #ddf; }
+code {
+   display: block;
+   font-size: 1.2em;
+   font-family: monospace;
+   margin-left: 20px;
+   padding-left: 10px;
+   border-left: 1px solid #2B1A00;
+}
+.tabSm { padding-left: 50px; }
+.tabLrg { padding-left: 100px; }
+.pink { color: #FF00A2; }
+.purple { color: purple; }
+.cadetBlue { color: cadetBlue; }
+.blue { color: blue; }
+.orange { color: orange; }
+.violet { color: violet; }
+.red { color: red; }
+.comment { color: #8698A9; }
+
+#copy {
+   font-size: 0.8em;
+   text-align: right;
+}
+.redDivWrapper{
+   background: black;
+}
+#ctrls{
+   width: 310px;
+   margin: 5px auto;
+}
+#ctrls button{
+   display: inline-block;
+   padding: 4px;
+   background: none;
+   border: 1px solid blue;
+   border-radius: 5px;
+      width: 150px;
+   color: blue;
+}
+#animationControls button:hover{
+   background: #ddf;
+}
+#nonAnimatingRedDiv, #myAnimatingRedDiv{
+   width: 100px; height: 100px;
+   width: 100px; height: 100px;
+   background: red; margin-left: 0;
+}
+      </style>
+   </head>
+   <body>
+      <h1 id="firstH1">JavaScript Plugin/Script</h1>
+      <div id="pageWrapper">
+	 <h1 id="secondH1">Animation Utility T{}</h1>
+
+	 <div class="dlD">
+	    <h2>Download:</h2>
+	    <a class="btn" href="Timer.js">Timer.js</a>
+	    <a class="btn" href="Timer.min.js">Timer.min.js</a>
+	 </div>
+
+	 <h2>Description</h2>
+	 <p>This script is a Request Animation Frame(RAF) api wrapper object named T{}.</p>
+	 <p>T{} conveniently provides RAF timing functionality to any and multiple objects. Objects using T{} must include a tick() method and this is the RAF callback that includes the elapsed time data argument.  Objects can easily be animated by adding and removing themselves to T{}. T{} is a singleton object and so there should only be one per program. <p>
+	 <p>Understanding and using RAF may be an advanced topic. Besides understanding RAF however, only very basic Web Programming skills are required to take advantage of T{}. Namely, familiarity with simple algorithm coding, the basic JavaScript OOP pattern, and html dom node css property manipulation.</p>
+	 <p>This script works on all modern browsers including IE9 and above.</p>
+
+
+	 <h2>Usage</h2>
+	 <p>Include the T{} singleton object in your JavaScript. Then design animation programming using basic JavaScript OOP techniques naming your animation update function tick. Then to start/stop the animation, just add/remove your object to/from T{} using T.add() and T.rm(). </p>
+
+	 <h2>DEMO</h2>
+	 <p> In this usage example we will animate a red div forward and back across the width of this page. We markup a div element in the page, give it an id, style it, and then go into JavaScript programming. In the JavaScript programming, we write a tick method. On each tick call we advance our red div. If the end is reached, we reverse our advance value from a positive amount to a negative amount.</p>
+
+	 <h3>html markup</h3>
+	 <code>&lt;div id="myAnimatingRedDiv"&gt;&lt;&sol;div&gt;</code>
+
+	 <h3>css styles</h3>
+	 <code>#myAnimatingRedDiv {</code>
+	 <code class="tabSm"> width: <span class="pink">100px</span>;</code>
+	 <code class="tabSm"> height: <span class="pink">100px</span>;</code>
+	 <code class="tabSm"> background: <span class="pink">red</span>;</code>
+	 <code>}</code>
+
+	 <h3>result so far:</h3>
+	 <div class="redDivWrapper">
+	    <div id="nonAnimatingRedDiv"></div>
+	 </div>
+	 <p>We have a wrapper div of width:<span class="pink">600px</span>, and background:<span class="pink">black</span>.</p>
+	 <p>Inside the wrapper div we have our <span class="pink">100 X 100px</span> red div.</p>
+	 <p>Our mission is to animate this red div moving back and forth inside it's parent wrapper div. A very simple algorithm is to successively add an amount to it's margin-left css property. And when the end is reached, to successively minus an amount. Finally, when the beginning is reached, the cycle is complete, so we wish to repeat.</p>
+	 <p>So we will advance right by increasing margin-left property from <span class="pink">0->500px</span>.</p>
+	 <p>And we will retreat left by decreasing margin-left property from <span class="pink">500->0px</span>.</p>
+
+	 <h3>adding the JavaScript</h3>
+
+	 <code class="comment">&sol;&sol; design animating class</code>
+	 <code>var <span class="pink">ScrollingDiv</span> = function(<span class="pink">$domNode</span>){</code>
+	 <code class="tabSm">this.<span class="purple">node</span> = <span class="pink">$domNode</span>;</code>
+	 <code class="tabSm">this.<span class="purple">position</span> = <span class="pink">0</span>;</code>
+	 <code class="tabSm">this.<span class="purple">speed</span> = <span class="pink">20</span>;</code>
+	 <code>};</code>
+
+	 <code><span class="pink">ScrollingDiv</span>.prototype.<span class="purple">setPosition</span> = function(){</code>
+	 <code class="tabSm"> this.<span class="purple">node</span>.style.<span class="red">marginLeft</span> = this.<span class="purple">position</span> + <span class="pink">"px"</span>;</code>
+	 <code>};</code>
+
+	 <code><span class="pink">ScrollingDiv</span>.prototype.<span class="purple">tick</span> = function(<span class="pink">elapsed</span>){</code>
+	 <code class="tabSm comment"> &sol;&sol; RAF gives time elapsed between frames</code>
+	 <code class="tabSm comment"> &sol;&sol; we do not use it for this simple example</code>
+	 <code class="tabSm"> this.<span class="purple">position</span> += this.<span class="purple">speed</span>;</code>
+	 <code class="tabSm">if(this.<span class="purple">position</span> &gt; <span class="pink">500</span>){</code>
+	 <code class="tabLrg">this.<span class="purple">position</span> = <span class="pink">500</span>;</code>
+	 <code class="tabLrg">this.<span class="purple">speed</span> *= <span class="pink">-1</span>;</code>
+	 <code class="tabSm">} else if(this.<span class="purple">position</span> &lt; <span class="pink">0</span>){</code>
+	 <code class="tabLrg">this.<span class="purple">position</span> = <span class="pink">0<span>;</code>
+	 <code class="tabLrg">this.<span class="purple">speed</span> *= <span class="pink">-1;</span></code>
+	 <code class="tabSm">}</code>
+	 <code class="tabSm"> this.<span class="purple">setPosition()</span>;</code>
+	 <code>};</code>
+	 <code><span class="pink">ScrollingDiv</span>.prototype.<span class="purple">start</span> = function(){</code>
+	 <code class="tabSm"> <span class="blue">T.add</span>(this);</code>
+	 <code>};</code>
+	 <code><span class="pink">ScrollingDiv</span>.prototype.<span class="purple">stop</span> = function(){</code>
+	 <code class="tabSm"> <span class="blue">T.rm</span>(this);</code>
+	 <code>};</code>
+
+	 <code class="comment">&sol;&sol; get handle to dom element</code>
+	 <code>var <span class="pink">redDiv</span> = document.getElementById(<span class="pink">"myAnimatingRedDiv"</span>);</code>
+	 <code class="comment">&sol;&sol; instantiate the animate class we designed</code>
+	 <code>var <span class="pink">scrollingRedDiv</span> = <span class="orange">new</span> <span class="pink">ScrollingDiv</span>(<span class="pink">redDiv</span>);</code>
+
+	 <code class="comment">&sol;&sol; Start Animating</code>
+	 <code><span class="pink">scrollingRedDiv</span>.<span class="blue">start</span>();</code>
+
+	 <h3>result:</h3>
+	 <div class="redDivWrapper">
+	    <div id="myAnimatingRedDiv"></div>
+
+	 </div>
+
+	 <div id="ctrls">
+	    <button id="start">scrollingRedDiv.start()</button>
+	    <button id="stop">scrollingRedDiv.stop()</button>
+	 </div>
+
+	 <h2>Final Notes</h2>
+	 <p>Timer.js &amp; Timer.min.js download links are a very small file size. T{} is just a few lines. And so to reduce the number of file gets() your web page requires, I would advise to just copy-paste the code in with the rest of your JavaScript. </p>
+	 <p>The minified script was minified using the <a href="https://closure-compiler.appspot.com">closure compiler</a> with the Optimization level set to (O)Whitespace only, and all formatting options unchecked.</p>
+	 <p>This page and all it contents are also posted at the following github link: <a href="https://github.com/nadeemelahi/timer">github.com/nadeemelahi/timer</a>.<p>
+
+	 <h2>License</h2>
+	 <p>This Scroll to Top plugin is licensed under gpl v2. Free for business or personal use. Not for re-sale. Please release modified or improved versions under gpl v2 license too.</p>
+
+	 <div class="dlD">
+	    <h2>Download: <br>
+	       (same as top of page)</h2>
+	    <p><a class="btn" href="Timer.js">Timer.js</a></p>
+	    <p><a class="btn" href="Timer.min.js">Timer.min.js</a></p>
+	 </div>
+
+      </div>
+
+      <p id="copy">Copyright 2018 &copy; nadeem.elahi@gmail.com</p>
+
+      <script type="text/javascript">
+var T=new function(){var items=[],len;this.add=function(item){items.push(item);len=items.length};var rmIdx;this.rm=function(item){rmIdx=items.indexOf(item);items.splice(rmIdx,1);len=items.length};var dt,ct,lt=Date.now();var raf=window.requestAnimationFrame||window.msRequestAnimationFrame||window.oRequestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||function(cb){setTimeout(cb,30)};var i,t=0;function ticker(){ct=Date.now();dt=ct-lt;t+=dt;if(t>30){for(i=0;i<len;i++)items[i].tick(t);
+t=0}lt=ct;raf(ticker)}ticker()};
+// design animating class
+var ScrollingDiv = function($domNode){
+   this.node = $domNode;
+   this.position = 0;
+   this.speed = 20;
+};
+ScrollingDiv.prototype.setPosition = function(){
+   this.node.style.marginLeft = this.position + "px";
+};
+ScrollingDiv.prototype.tick = function(elapsed){
+   // RAF gives time elapsed between frames
+   // we do not use it for this simple example
+   this.position += this.speed;
+   if(this.position > 500){
+      this.position = 500;
+      this.speed *= -1;
+   } else if(this.position < 0){
+      this.position = 0;
+      this.speed *= -1;
+   }
+   this.setPosition();
+};
+ScrollingDiv.prototype.start = function(){
+   T.add(this);
+};
+ScrollingDiv.prototype.stop = function(){
+   T.rm(this);
+};
+// get handle to dom element
+var redDiv = document.getElementById("myAnimatingRedDiv");
+// instantiate the animate class we designed
+var scrollingRedDiv = new ScrollingDiv(redDiv);
+// Start Animating
+scrollingRedDiv.start();
+var started=true;
+function clicks_h(e){
+
+   if(!e) var e = window.event;
+   if(e.target.id==="start"){
+      if(!started){
+	 scrollingRedDiv.start();
+	 started=true;
+      }
+
+   } else if(e.target.id==="stop"){
+      if(started){
+	 scrollingRedDiv.stop();
+	 started=false;
+      }
+   }
+}
+document.body.addEventListener(
+      "click",clicks_h,false);
+
+      </script>
+
+   </body>
+</html>
